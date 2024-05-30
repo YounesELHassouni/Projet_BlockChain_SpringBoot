@@ -40,7 +40,7 @@ public class BlockchainController {
     @GetMapping("/blockchain/block/{index}")
     public ResponseEntity<Block> getBlockByIndex(@PathVariable int index) {
         if (index >= 0 && index < blockchain.getChain().size()) {
-            Block block = blockchain.getChain().get(index);
+            Block block = blockchain.getBlockByIndex(index);
             return ResponseEntity.ok(block);
         } else {
             return ResponseEntity.notFound().build();
@@ -60,6 +60,21 @@ public class BlockchainController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Blockchain is invalid.");
         }
+    }
+    @PostMapping("/blockchain/blocks")
+    public Block addBlock(@RequestBody Block block) {
+        blockchain.addBlock(block);
+        return block;
+    }
+
+    @GetMapping("/blockchain/blocks/latest")
+    public Block getLatestBlock() {
+        return blockchain.getLatestBlock();
+    }
+
+    @GetMapping("/blockchain/blocks/validate")
+    public boolean validateBlockchain() {
+        return blockchain.validateChain();
     }
 }
 

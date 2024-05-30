@@ -17,7 +17,7 @@ public class BlockChainProjetApplication {
 
 	@Bean
 	public Blockchain blockchain() {
-		return new Blockchain();
+		return new Blockchain(4);
 	}
 
 	@PostConstruct

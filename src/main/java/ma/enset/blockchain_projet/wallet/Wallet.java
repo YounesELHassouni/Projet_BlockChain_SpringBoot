@@ -35,10 +35,10 @@ public class Wallet {
 
     public byte[] signTransaction(String data) {
         try {
-            Signature dsa = Signature.getInstance("SHA256withECDSA");
-            dsa.initSign(privateKey);
-            dsa.update(data.getBytes());
-            return dsa.sign();
+            Signature signature = Signature.getInstance("SHA256withECDSA");
+            signature.initSign(privateKey);
+            signature.update(data.getBytes());
+            return signature.sign();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -46,10 +46,10 @@ public class Wallet {
 
     public static boolean verifySignature(PublicKey publicKey, String data, byte[] signature) {
         try {
-            Signature dsa = Signature.getInstance("SHA256withECDSA");
-            dsa.initVerify(publicKey);
-            dsa.update(data.getBytes());
-            return dsa.verify(signature);
+            Signature sig = Signature.getInstance("SHA256withECDSA");
+            sig.initVerify(publicKey);
+            sig.update(data.getBytes());
+            return sig.verify(signature);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
