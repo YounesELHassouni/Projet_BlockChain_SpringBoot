@@ -9,7 +9,7 @@ public class Blockchain {
     private TransactionPool transactionPool;
     private int difficulty = 4;
     private int difficultyAdjustmentInterval = 10; // Number of blocks after which difficulty is adjusted
-    private long targetBlockInterval = 60000; // Target time for mining a block in milliseconds (e.g., 60 seconds)
+    private long targetBlockInterval = 10000; // Target time for mining a block in milliseconds
 
 
     public Blockchain(int difficulty) {
@@ -20,7 +20,10 @@ public class Blockchain {
     }
 
     public Block generateGenesisBlock() {
-        return new Block(0, "0", "Genesis Block");
+        Block newBlock= new Block(0, "0", "Genesis Block");
+        mineBlock(newBlock,this.difficulty);
+        return newBlock;
+
     }
 
     public Block getLatestBlock() {
@@ -59,6 +62,8 @@ public class Blockchain {
         String target = getDifficultyString(difficulty);
         while (!block.getCurrentHash().substring(0, difficulty).equals(target)) {
             block.setCurrentHash(block.calculateHash());
+            block.incrementNonce();
+            System.out.println("Mining: " + block.getCurrentHash());
         }
     }
 
@@ -72,7 +77,7 @@ public class Blockchain {
 
     public Block mineBlock() {
         List<Transaction> pendingTransactions = transactionPool.getPendingTransactions();
-        String data = pendingTransactions.toString(); // Simplified, usually serialized in a better way
+        String data = pendingTransactions.toString();
         Block newBlock = new Block(blockchain.size(), getLatestBlock().getCurrentHash(), data);
         mineBlock(newBlock,this.difficulty);
         blockchain.add(newBlock);

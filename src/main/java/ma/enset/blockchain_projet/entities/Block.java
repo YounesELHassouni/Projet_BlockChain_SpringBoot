@@ -16,6 +16,7 @@ public class Block {
     private String previousHash;
     private String currentHash;
     private String data;
+    private int nonce;
 
     public Block(int index, String previousHash, String data) {
         this.index = index;
@@ -23,11 +24,14 @@ public class Block {
         this.previousHash = previousHash;
         this.data = data;
         this.currentHash = calculateHash();
+        this.nonce = nonce;
     }
-
+    public void incrementNonce() {
+        nonce++;
+    }
     // Method to calculate the hash of the block
     public String calculateHash() {
-        String input = index + timestamp + previousHash + data;
+        String input = index + timestamp + previousHash + data + nonce;
         return applySha256(input);
     }
 

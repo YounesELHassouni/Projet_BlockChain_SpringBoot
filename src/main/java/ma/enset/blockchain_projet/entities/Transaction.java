@@ -3,8 +3,9 @@ package ma.enset.blockchain_projet.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
 public class Transaction {
     private String sender; // Adresse de l'expéditeur
     private String recipient; // Adresse du destinataire

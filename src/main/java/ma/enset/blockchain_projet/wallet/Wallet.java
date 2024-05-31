@@ -1,16 +1,20 @@
 package ma.enset.blockchain_projet.wallet;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import ma.enset.blockchain_projet.entities.Transaction;
 
 import java.security.*;
 import java.util.Base64;
 
 @Getter @Setter
 public class Wallet {
+
     private PrivateKey privateKey;
     private PublicKey publicKey;
+    private String address;
 
     public Wallet() {
         generateKeyPair();
@@ -24,7 +28,12 @@ public class Wallet {
             KeyPair keyPair = keyGen.generateKeyPair();
             privateKey = keyPair.getPrivate();
             publicKey = keyPair.getPublic();
+            this.address = getAddress();
+            System.out.println("Public key: " + publicKey);
+            System.out.println("Private key: " + privateKey);
+            System.out.println("Address: " + address);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -40,6 +49,7 @@ public class Wallet {
             signature.update(data.getBytes());
             return signature.sign();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -51,6 +61,7 @@ public class Wallet {
             sig.update(data.getBytes());
             return sig.verify(signature);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
