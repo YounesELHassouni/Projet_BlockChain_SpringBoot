@@ -1,6 +1,8 @@
 package ma.enset.blockchain_projet.entities;
 
 
+import ma.enset.blockchain_projet.controller.WalletController;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class Blockchain {
         while (!block.getCurrentHash().substring(0, difficulty).equals(target)) {
             block.setCurrentHash(block.calculateHash());
             block.incrementNonce();
-            System.out.println("Mining: " + block.getCurrentHash());
+            //System.out.println("Mining: " + block.getCurrentHash());
         }
     }
 
@@ -72,6 +74,8 @@ public class Blockchain {
     }
 
     public void addTransaction(Transaction transaction) {
+        Wallet wallet = new Wallet(100);
+        wallet.addTransaction(transaction);
         transactionPool.addTransaction(transaction);
     }
 

@@ -14,12 +14,6 @@ public class BlockChainProjetApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BlockChainProjetApplication.class, args);
 	}
-
-	@Bean
-	public Blockchain blockchain() {
-		return new Blockchain(4);
-	}
-
 	@PostConstruct
 	public void startP2PServer() {
 		P2PServer p2pServer = new P2PServer(7000);

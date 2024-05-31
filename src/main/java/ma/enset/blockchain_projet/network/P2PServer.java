@@ -15,16 +15,12 @@ import java.util.List;
 import java.util.Set;
 
 public class P2PServer extends WebSocketServer {
-
     private Set<WebSocket> connections = new HashSet<>();
     private List<Node> nodes;
-
-
     public P2PServer(int port) {
         super(new InetSocketAddress(port));
         this.nodes = new ArrayList<>();
     }
-
     // Ajoute un nœud au réseau
     public void addNode(Node node) {
         nodes.add(node);
@@ -35,7 +31,6 @@ public class P2PServer extends WebSocketServer {
             node.sendMessage(message);
         }
     }
-
     // Method for handling received messages
     public void handleMessage(Message message) {
         // Process the received message (e.g., propagate to the blockchain)
@@ -45,19 +40,16 @@ public class P2PServer extends WebSocketServer {
         connections.add(conn);
         System.out.println("New connection: " + conn.getRemoteSocketAddress());
     }
-
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         connections.remove(conn);
         System.out.println("Closed connection: " + conn.getRemoteSocketAddress());
     }
-
     @Override
     public void onMessage(WebSocket conn, String message) {
         System.out.println("Message from " + conn.getRemoteSocketAddress() + ": " + message);
         broadcast(message);
     }
-
     @Override
     public void onError(WebSocket conn, Exception ex) {
         ex.printStackTrace();
@@ -65,7 +57,6 @@ public class P2PServer extends WebSocketServer {
             connections.remove(conn);
         }
     }
-
     @Override
     public void onStart() {
         System.out.println("P2P server started successfully");

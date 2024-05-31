@@ -18,11 +18,9 @@ public class Node {
         this.nodeId = nodeId;
         this.connectedPeers = new ArrayList<>();
     }
-
     public String getNodeId() {
         return nodeId;
     }
-
     // Method to establish connections with other nodes
     public void connectToNode(Node node) {
         if (!connectedPeers.contains(node)) {
@@ -31,19 +29,16 @@ public class Node {
             System.out.println(nodeId + " connected to " + node.getNodeId());
         }
     }
-
     // Method to send a message to a connected peer
     public void sendMessage(Message message) {
         for (Node peer : connectedPeers) {
             peer.receiveMessage(message);
         }
     }
-
     // Method to handle received messages
     public void receiveMessage(Message message) {
         System.out.println(nodeId + " received message: " + message.getFormattedMessage());
     }
-
 }
 
 

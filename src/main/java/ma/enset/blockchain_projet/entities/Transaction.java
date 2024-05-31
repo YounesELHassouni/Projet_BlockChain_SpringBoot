@@ -18,7 +18,5 @@ public class Transaction {
         this.amount = amount;
         this.signature = signature;
     }
-
-
 }
 

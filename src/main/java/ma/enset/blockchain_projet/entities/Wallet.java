@@ -1,25 +1,28 @@
-package ma.enset.blockchain_projet.wallet;
+package ma.enset.blockchain_projet.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.enset.blockchain_projet.entities.Transaction;
+import ma.enset.blockchain_projet.controller.WalletController;
 
 import java.security.*;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 @Getter @Setter
 public class Wallet {
-
     private PrivateKey privateKey;
     private PublicKey publicKey;
+    private double balance = 0.0;
     private String address;
-
-    public Wallet() {
+    private List<Transaction> transactions;
+    public Wallet(double balance ) {
         generateKeyPair();
+        this.balance = balance;
+        this.transactions = new ArrayList<>();
     }
-
     private void generateKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC");
@@ -29,19 +32,14 @@ public class Wallet {
             privateKey = keyPair.getPrivate();
             publicKey = keyPair.getPublic();
             this.address = getAddress();
-            System.out.println("Public key: " + publicKey);
-            System.out.println("Private key: " + privateKey);
-            System.out.println("Address: " + address);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
-
     public String getAddress() {
         return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
-
     public byte[] signTransaction(String data) {
         try {
             Signature signature = Signature.getInstance("SHA256withECDSA");
@@ -63,6 +61,16 @@ public class Wallet {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
+        }
+    }
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
+        WalletController walletController = new WalletController();
+        if(walletController.wallets.get(transaction.getSender()).balance>transaction.getAmount()){
+            walletController.wallets.get(transaction.getRecipient()).balance += transaction.getAmount();
+            walletController.wallets.get(transaction.getSender()).balance -= transaction.getAmount();
+
+
         }
     }
 
